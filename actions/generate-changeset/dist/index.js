@@ -119529,7 +119529,9 @@ ${has_approved_label ? "- [x] Maintainers can remove approval by unchecking this
   const normalize2 = (text2) => text2.replace(/\(https:\/\/github.com[^]*\.md\)/g, "").trim();
   const changes = !previous_comment || normalize2(previous_comment) !== normalize2(new_comment);
   if (!changes && previous_comment) {
-    console.log(`[create_changeset_comment] No changes detected, skipping comment update`);
+    console.log(
+      `[create_changeset_comment] No changes detected, skipping comment update`
+    );
   }
   return {
     pr_comment_content: new_comment,
@@ -119589,7 +119591,9 @@ function check_for_manual_selection_and_approval(md_src, wasEdited, editor, has_
   if (wasEdited && editor && editor !== "gradio-pr-bot") {
     if (has_approved_label !== void 0 && checkbox_checked !== has_approved_label) {
       should_toggle_label = true;
-      console.log(`[check_for_manual_selection_and_approval] Label toggle needed: checkbox=${checkbox_checked}, label=${has_approved_label}`);
+      console.log(
+        `[check_for_manual_selection_and_approval] Label toggle needed: checkbox=${checkbox_checked}, label=${has_approved_label}`
+      );
     }
   }
   console.log(`[check_for_manual_selection_and_approval] States:`, {
@@ -119723,13 +119727,18 @@ function get_client(token, owner, repo) {
     },
     async get_or_create_label(label_name) {
       try {
-        const { repository: { label } } = await octokit.graphql(
-          GQL_GET_LABEL,
-          { owner, name: repo, label_name }
-        );
+        const {
+          repository: { label }
+        } = await octokit.graphql(GQL_GET_LABEL, {
+          owner,
+          name: repo,
+          label_name
+        });
         return (label == null ? void 0 : label.id) || null;
       } catch (error2) {
-        console.log(`Label "${label_name}" not found, will need to be created manually`);
+        console.log(
+          `Label "${label_name}" not found, will need to be created manually`
+        );
         return null;
       }
     },
@@ -119824,7 +119833,6 @@ const dev_only_ignore_globs = [
 ];
 async function run() {
   var _a;
-  console.log(JSON.stringify(context, null, 2));
   const branch_name = coreExports.getInput("branch_name");
   if (branch_name.startsWith("changeset-release/")) {
     coreExports.info("Release PR. Skipping changeset generation.");
